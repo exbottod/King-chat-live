@@ -1,0 +1,25 @@
+name: Get SHA-1 from Repo Keystore
+
+on:
+  workflow_dispatch:
+
+jobs:
+  getsha1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Print SHA-1 from repo keystore
+        run: |
+          echo "===== SHA-1 (COPY INI) ====="
+          keytool -list -v -keystore debug.keystore \
+            -alias androiddebugkey -storepass android -keypass android \
+            | grep "SHA1:"
+          echo "===== END ====="
